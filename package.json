@@ -6,7 +6,17 @@
         "@yagni-js/yagni-dom": "^0.2.0",
         "@yagni-js/yagni-router": "^0.1.0",
         "eslint": "^4.18.2",
+        "eslint-plugin-better": "^0.1.5",
+        "eslint-plugin-fp": "^2.3.0",
+        "eslint-plugin-import": "^2.9.0",
         "rollup": "^0.56.4",
-        "rollup-plugin-eslint": "^4.0.0"
+        "rollup-plugin-commonjs": "^9.0.0",
+        "rollup-plugin-eslint": "^4.0.0",
+        "rollup-plugin-node-resolve": "^3.0.3",
+        "todomvc-app-css": "^2.1.0"
+    },
+    "scripts": {
+        "build": "rollup -c",
+        "watch": "rollup -c -w"
     }
 }
