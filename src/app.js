@@ -1,9 +1,17 @@
 
+import { always, call, pick, pipe } from '@yagni-js/yagni';
+import { addListener, query, render } from '@yagni-js/yagni-dom';
+
 import { debug } from './logger';
+import { win } from './globals';
+import { appView } from './views';
 
 
-function app() {
-  return debug('foo');
-}
+const onLoadHandler = call(
+  pipe([pick('target'), pick('body'), query('#wrapper'), render]),
+  pipe([always({}), appView])
+);
 
-export default app();
+const onLoad = addListener({event: 'load', handler: onLoadHandler});
+
+export default onLoad(win);
