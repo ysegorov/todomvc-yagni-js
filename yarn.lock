@@ -2,19 +2,19 @@
 # yarn lockfile v1
 
 
-"@yagni-js/rollup-plugin-yagni@^0.2.1":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@yagni-js/rollup-plugin-yagni/-/rollup-plugin-yagni-0.2.1.tgz#2ebbf62468eb171cf30d481324e9372f273c2cef"
+"@yagni-js/rollup-plugin-yagni@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@yagni-js/rollup-plugin-yagni/-/rollup-plugin-yagni-0.3.0.tgz#08ae427ebe0d36bb7a78cefe2d06d1fe712192e5"
   dependencies:
-    "@yagni-js/yagni-parser" "^0.2.1"
+    "@yagni-js/yagni-parser" "^0.3.0"
 
-"@yagni-js/yagni-dom@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@yagni-js/yagni-dom/-/yagni-dom-0.2.0.tgz#3d5b8459d947652d7830d8553bb4c4ccaaed972b"
+"@yagni-js/yagni-dom@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@yagni-js/yagni-dom/-/yagni-dom-0.3.0.tgz#c4a850177b47d3ed4e4ab0585a6aeed6254ece64"
 
-"@yagni-js/yagni-parser@^0.2.1":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@yagni-js/yagni-parser/-/yagni-parser-0.2.1.tgz#b50a8f41a1aefff665cf22659b833a9de96c1f0d"
+"@yagni-js/yagni-parser@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@yagni-js/yagni-parser/-/yagni-parser-0.3.0.tgz#8ac5f0e56ec11c34f67e639367089ec145c8e011"
   dependencies:
     parse5 "^4.0.0"
 
