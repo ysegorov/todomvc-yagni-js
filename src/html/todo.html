@@ -1,0 +1,8 @@
+<li class="{{ ctx.completed ? 'completed' : '' }}">
+    <div class="view">
+        <input class="toggle" type="checkbox" @checked="ctx.checked">
+        <label>{{ ctx.title }}</label>
+        <button class="destroy"></button>
+    </div>
+    <input class="edit" @value="ctx.title">
+</li>

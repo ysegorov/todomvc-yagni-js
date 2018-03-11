@@ -1,5 +1,5 @@
 <section class="todoapp">
     <partial src="./header.html"></partial>
-    <partial src="./main.html"></partial>
-    <partial src="./footer.html"></partial>
+    <partial src="./main.html" p-if="ctx.length"></partial>
+    <partial src="./footer.html" p-if="ctx.length"></partial>
 </section>

@@ -4,12 +4,13 @@ import { addListener, hToDOM, query, prependTo } from '@yagni-js/yagni-dom';
 
 import { debug } from './logger';
 import { win } from './globals';
+import * as store from './store';
 import { appView } from './views';
 
 
 const onLoadHandler = call(
   pipe([pick('target'), pick('body'), prependTo]),
-  pipe([always({}), appView, hToDOM])
+  pipe([store.getAll, appView, hToDOM])
 );
 
 const onLoad = addListener({event: 'load', handler: onLoadHandler});
