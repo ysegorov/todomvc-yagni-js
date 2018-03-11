@@ -5,6 +5,8 @@
         "@yagni-js/yagni": "^0.3.0",
         "@yagni-js/yagni-dom": "^0.3.0",
         "@yagni-js/yagni-router": "^0.1.0",
+        "chokidar": "^2.0.2",
+        "chokidar-cli": "^1.2.0",
         "eslint": "^4.18.2",
         "eslint-plugin-better": "^0.1.5",
         "eslint-plugin-fp": "^2.3.0",
@@ -19,6 +21,6 @@
     "scripts": {
         "prebuild": "mkdir -p dist/css && cp -f node_modules/todomvc-app-css/index.css dist/css/",
         "build": "rollup -c",
-        "watch": "rollup -c -w"
+        "watch": "chokidar src/html/*.html src/*.js --initial -c \"rollup -c\""
     }
 }
