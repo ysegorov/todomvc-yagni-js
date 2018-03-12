@@ -8,7 +8,7 @@ import yagni from '@yagni-js/rollup-plugin-yagni';
 
 export default [
   {
-    input: 'src/app.js',
+    input: 'src/js/app.js',
     output: [
       {file: 'dist/js/bundle.js', format: 'iife', name: 'todoApp'}
     ],
