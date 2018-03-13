@@ -9,9 +9,9 @@ import * as handlers from './handlers';
 
 
 const urls = [
-  url(/^$/, handlers.mainpage),
-  url(/^active$/, handlers.active),
-  url(/^completed$/, handlers.completed)
+  url(/^\/?$/, handlers.mainpage),
+  url(/^\/?active$/, handlers.active),
+  url(/^\/?completed$/, handlers.completed)
 ];
 
 const router = hashRouter(urls);
