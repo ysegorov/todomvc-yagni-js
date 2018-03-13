@@ -1,18 +1,30 @@
 
-import { always, call, pick, pipe } from '@yagni-js/yagni';
-import { addListener, hToDOM, query, prependTo } from '@yagni-js/yagni-dom';
+import { always, objOf, pipe } from '@yagni-js/yagni';
+import { addListener } from '@yagni-js/yagni-dom';
+import { hashRouter, url } from '@yagni-js/yagni-router';
 
 import { debug } from './logger';
 import { win } from './globals';
-import * as store from './store';
-import { appView } from './views';
+import * as handlers from './handlers';
 
 
-const onLoadHandler = call(
-  pipe([pick('target'), pick('body'), prependTo]),
-  pipe([store.getAll, appView, hToDOM])
-);
+const urls = [
+  url(/^$/, handlers.mainpage),
+  url(/^active$/, handlers.active),
+  url(/^completed$/, handlers.completed)
+];
 
-const onLoad = addListener({event: 'load', handler: onLoadHandler});
+const router = hashRouter(urls);
+
+const onLoadHandler = pipe([
+  always(win),
+  objOf('target'),
+  router
+]);
+
+const onLoad = pipe([
+  addListener({event: 'hashchange', handler: router}),
+  addListener({event: 'load', handler: onLoadHandler})
+]);
 
 export default onLoad(win);
