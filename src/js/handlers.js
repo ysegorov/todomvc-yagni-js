@@ -1,5 +1,5 @@
 
-import { always, call, objOf, pick, pipe, tap } from '@yagni-js/yagni';
+import { always, call, identity, ifElse, isNil, objOf, pick, pickFrom, pipe, result, tap, transform } from '@yagni-js/yagni';
 import { addListener, hToDOM, query, renderR } from '@yagni-js/yagni-dom';
 
 import { debug } from './logger';
@@ -8,17 +8,38 @@ import * as store from './store';
 import { appView } from './views';
 
 
-export const mainpage = call(
-  pipe([always(doc), pick('body'), query('#content'), renderR]),
-  pipe([store.getAll, appView])
-);
+const urlStoreMap = {
+  '': store.getAll,
+  'active': store.getActive,
+  'completed': store.getCompleted
+};
 
-export const active = call(
-  pipe([always(doc), pick('body'), query('#content'), renderR]),
-  pipe([store.getActive, appView])
-);
 
-export const completed = call(
-  pipe([always(doc), pick('body'), query('#content'), renderR]),
-  pipe([store.getCompleted, appView])
+const prepareView = pipe([
+  pick(1),
+  ifElse(
+    isNil,
+    always(''),
+    identity
+  ),
+  transform({
+    filter: identity,
+    items: pipe([
+      pickFrom(urlStoreMap),
+      result
+    ])
+  }),
+  appView
+]);
+
+const prepareRenderer = pipe([
+  always(doc),
+  pick('body'),
+  query('#content'),
+  renderR
+]);
+
+export const appHandler = call(
+  prepareRenderer,
+  prepareView
 );
