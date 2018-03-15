@@ -1,8 +1,9 @@
 
-import { callMethod, equals, identity, ifElse, isEmpty, pick, pipe } from '@yagni-js/yagni';
-import { eventHandler } from '@yagni-js/yagni-dom';
+import { always, call, callMethod, equals, identity, ifElse, isEmpty, omit, pick, pipe, transform } from '@yagni-js/yagni';
+import { closest, eventHandler, queryFirst, render } from '@yagni-js/yagni-dom';
 
 import { debug } from './logger';
+import { todoView } from './views';
 
 
 const isEnter = pipe([
@@ -11,13 +12,31 @@ const isEnter = pipe([
   equals('Enter')
 ]);
 
+const renderNewTodo = call(
+  pipe([
+    pick('content'),
+    queryFirst('[data-js=todo-list]'),
+    render
+  ]),
+  pipe([
+    omit('content'),
+    todoView
+  ])
+);
+
 const createTodo = pipe([
   pick('matchedElement'),
-  callMethod(pick('value'), 'trim'),
+  transform({
+    content: closest('#content'),
+    title: callMethod(pick('value'), 'trim'),
+    completed: always(false)
+  }),
   ifElse(
-    equals(''),
-    identity,
-    debug
+    pipe([pick('value'), equals('')]),
+    always(false),
+    pipe([
+      tap(renderNewTodo)
+    ])
   )
 ]);
 
