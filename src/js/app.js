@@ -10,7 +10,7 @@ import * as events from './events';
 
 
 const urls = [
-  url(/^\/(active|completed)?$/, handlers.appHandler),
+  url(/^\/?(active|completed)?$/, handlers.appHandler),
 ];
 
 const appEvents = [
