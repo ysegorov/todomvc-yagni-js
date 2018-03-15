@@ -1,5 +1,5 @@
 
-import { always, call, callMethod, equals, identity, ifElse, isEmpty, omit, pick, pipe, transform } from '@yagni-js/yagni';
+import { always, call, callMethod, equals, identity, ifElse, isEmpty, omit, pick, pipe, transform, tap } from '@yagni-js/yagni';
 import { closest, eventHandler, queryFirst, render } from '@yagni-js/yagni-dom';
 
 import { debug } from './logger';
