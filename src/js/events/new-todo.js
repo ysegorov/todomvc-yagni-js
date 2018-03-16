@@ -2,8 +2,8 @@
 import { always, call, callMethod, equals, identity, ifElse, isEmpty, omit, pick, pipe, transform, tap } from '@yagni-js/yagni';
 import { closest, eventHandler, queryFirst, render } from '@yagni-js/yagni-dom';
 
-import { debug } from './logger';
-import { todoView } from './views';
+import { debug } from '../logger';
+import { todoView } from '../views';
 
 
 const isEnter = pipe([
@@ -40,11 +40,11 @@ const createTodo = pipe([
   )
 ]);
 
-const newTodoHandler = ifElse(
+const newTodo = ifElse(
   isEnter,
   createTodo,
   identity
 );
 
 
-export const newTodo = eventHandler('keypress', '[data-js=new-todo]', newTodoHandler);
+export const newTodoEventHandler = eventHandler('keypress', '[data-js=new-todo]', newTodo);

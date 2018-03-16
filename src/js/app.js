@@ -6,7 +6,7 @@ import { hashRouter, url } from '@yagni-js/yagni-router';
 import { debug } from './logger';
 import { win } from './globals';
 import * as handlers from './handlers';
-import * as events from './events';
+import { newTodoEventHandler } from './events/new-todo';
 
 
 const urls = [
@@ -14,7 +14,7 @@ const urls = [
 ];
 
 const appEvents = [
-  events.newTodo
+  newTodoEventHandler
 ];
 
 const router = hashRouter(urls);
