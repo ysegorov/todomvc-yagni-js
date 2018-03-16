@@ -4,6 +4,8 @@ import { closest, eventHandler, queryFirst, render, setProp } from '@yagni-js/ya
 
 import { debug } from '../logger';
 import { todoView } from '../views';
+import { serializeTodos } from '../serialize';
+import { save } from '../store';
 
 
 const isEnter = pipe([
@@ -30,6 +32,12 @@ const clearInput = pipe([
   setProp('value', '')
 ]);
 
+const updateStore = pipe([
+  pick('content'),
+  serializeTodos,
+  save
+]);
+
 const createTodo = pipe([
   pick('matchedElement'),
   transform({
@@ -38,11 +46,12 @@ const createTodo = pipe([
     completed: always(false)
   }),
   ifElse(
-    pipe([pick('value'), equals('')]),
+    pipe([pick('title'), equals('')]),
     always(false),
     pipe([
       tap(renderNewTodo),
-      tap(clearInput)
+      tap(clearInput),
+      tap(updateStore)
     ])
   )
 ]);

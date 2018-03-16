@@ -1,5 +1,5 @@
 
-import { always, filter, identity, ifElse, isNil, method, not, pick, pipe } from '@yagni-js/yagni';
+import { always, callMethod2, filter, identity, ifElse, isNil, method, not, pick, pipe } from '@yagni-js/yagni';
 
 import { debug } from './logger';
 import { storage } from './globals';
@@ -11,12 +11,12 @@ const isCompleted = pick('completed');
 
 
 export const getAll = pipe([
-  always(storage),
-  pick(key),
+  always(key),
+  method(storage, 'getItem'),
   ifElse(
     isNil,
     always([]),
-    method(JSON, 'decode')
+    method(JSON, 'parse')
   )
 ]);
 
@@ -29,3 +29,10 @@ export const getActive = pipe([
   getAll,
   filter(not(isCompleted))
 ]);
+
+export const save = callMethod2(
+  always(storage),
+  'setItem',
+  key,
+  method(JSON, 'stringify')
+);
