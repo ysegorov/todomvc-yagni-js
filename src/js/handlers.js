@@ -1,17 +1,17 @@
 
-import { always, call, identity, ifElse, isNil, objOf, pick, pickFrom, pipe, result, tap, transform } from '@yagni-js/yagni';
+import { always, call, identity, ifElse, isNil, method, objOf, pick, pickFrom, pipe, result, tap, transform } from '@yagni-js/yagni';
 import { addListener, hToDOM, query, renderR } from '@yagni-js/yagni-dom';
 
 import { debug } from './logger';
 import { doc } from './globals';
-import * as store from './store';
+import { store } from './store';
 import { appView } from './views';
 
 
 const urlStoreMap = {
-  '': store.getAll,
-  'active': store.getActive,
-  'completed': store.getCompleted
+  '': method(store, 'getAll'),
+  'active': method(store, 'getActive'),
+  'completed': method(store, 'getCompleted')
 };
 
 
