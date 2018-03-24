@@ -1,5 +1,5 @@
 
-import { always, callMethod2, filter, identity, ifElse, isNil, method, mutate, not, pick, pipe } from '@yagni-js/yagni';
+import { always, callMethod, callMethod2, filter, identity, ifElse, isNil, method, mutate, not, pick, pipe, tap } from '@yagni-js/yagni';
 
 import { debug } from './logger';
 import { storage } from './globals';
@@ -27,7 +27,7 @@ const nextId = pipe([
 ]);
 
 const loadFromStorage = pipe([
-  method(storage, 'getItem'),
+  callMethod(always(storage), 'getItem', storageKey),
   ifElse(
     isNil,
     always([]),
@@ -48,33 +48,27 @@ function add(obj, todo) {
   return saveToStorage(allTodos(subj));
 }
 
-
-const storeProto = {
-  getAll: function getAll() {
-    //eslint-disable-next-line fp/no-this
-    return allTodos(this);
-  },
-  getActive: function getActive() {
-    //eslint-disable-next-line fp/no-this
-    return activeTodos(this);
-  },
-  getCompleted: function getCompleted() {
-    //eslint-disable-next-line fp/no-this
-    return completedTodos(this);
-  },
-  getNextId: function getNextId() {
-    //eslint-disable-next-line fp/no-this
-    return nextId(this);
-  },
-  addTodo: function addTodo(todo) {
-    //eslint-disable-next-line fp/no-this
-    return add(this, todo);
-  }
-};
-
 function createStore() {
-  const store = Object.create(storeProto);
-  return mutate(store, todosKey, loadFromStorage(storageKey));
+
+  const obj = mutate({}, todosKey, loadFromStorage());
+
+  return {
+    getAll: function getAll() {
+      return allTodos(obj);
+    },
+    getActive: function getActive() {
+      return activeTodos(obj);
+    },
+    getCompleted: function getCompleted() {
+      return completedTodos(obj);
+    },
+    getNextId: function getNextId() {
+      return nextId(obj);
+    },
+    addTodo: function addTodo(todo) {
+      return add(obj, todo);
+    }
+  };
 }
 
 export const store = createStore();
