@@ -4,7 +4,6 @@ import { closest, eventHandler, queryFirst, render, renderR, setProp } from '@ya
 
 import { debug } from '../logger';
 import { itemsLeftView, todoView } from '../views';
-import { serializeTodos } from '../serialize';
 import { store } from '../store';
 
 
