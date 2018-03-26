@@ -1,5 +1,5 @@
 
-import { always, callMethod, callMethod2, filter, identity, ifElse, isNil, method, mutate, not, pick, pipe, tap } from '@yagni-js/yagni';
+import { always, call, callMethod, callMethod2, concat, filter, identity, ifElse, isEmpty, isNil, method, mutate, not, pick, pipe } from '@yagni-js/yagni';
 
 import { debug } from './logger';
 import { storage } from './globals';
@@ -9,8 +9,11 @@ const storageKey = 'todos-yagni-js';
 const todosKey = '_todos';
 
 const isCompleted = pick('completed');
-const length = pick('length');
+const getId = pick('id');
 
+function last(arr) {
+  return arr[arr.length - 1];
+}
 const allTodos = pick(todosKey);
 const activeTodos = pipe([
   allTodos,
@@ -21,9 +24,21 @@ const completedTodos = pipe([
   filter(isCompleted)
 ]);
 
+function addOne(num) {
+  return num + 1;
+}
+
 const nextId = pipe([
   allTodos,
-  length
+  ifElse(
+    isEmpty,
+    always(0),
+    pipe([
+      last,
+      getId,
+      addOne
+    ])
+  )
 ]);
 
 const loadFromStorage = pipe([
@@ -34,7 +49,6 @@ const loadFromStorage = pipe([
     method(JSON, 'parse')
   )
 ]);
-
 const saveToStorage = callMethod2(
   always(storage),
   'setItem',
@@ -42,11 +56,34 @@ const saveToStorage = callMethod2(
   method(JSON, 'stringify')
 );
 
-function add(obj, todo) {
-  const todos = allTodos(obj);
-  const subj = mutate(obj, todosKey, todos.concat(todo));
-  return saveToStorage(allTodos(subj));
+
+function mutateStore(obj) {
+  return function (value) {
+    return mutate(obj, todosKey, value);
+  };
 }
+function persistStore(obj) {
+  return pipe([
+    mutateStore(obj),
+    allTodos,
+    saveToStorage
+  ]);
+}
+
+function add(obj) {
+  return pipe([
+    call(
+      pipe([
+        always(obj),
+        allTodos,
+        concat
+      ]),
+      identity
+    ),
+    persistStore(obj)
+  ]);
+}
+
 
 function createStore() {
 
@@ -65,9 +102,7 @@ function createStore() {
     getNextId: function getNextId() {
       return nextId(obj);
     },
-    addTodo: function addTodo(todo) {
-      return add(obj, todo);
-    }
+    addTodo: add(obj)
   };
 }
 
