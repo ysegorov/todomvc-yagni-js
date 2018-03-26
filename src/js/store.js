@@ -1,5 +1,5 @@
 
-import { always, call, callMethod, callMethod2, concat, filter, identity, ifElse, isEmpty, isNil, method, mutate, not, pick, pipe } from '@yagni-js/yagni';
+import { always, call, callMethod, callMethod2, concat, filter, identity, ifElse, isEmpty, isNil, length, method, mutate, not, objOf, pick, pipe, tap } from '@yagni-js/yagni';
 
 import { debug } from './logger';
 import { storage } from './globals';
@@ -22,6 +22,10 @@ const activeTodos = pipe([
 const completedTodos = pipe([
   allTodos,
   filter(isCompleted)
+]);
+const itemsLeft = pipe([
+  activeTodos,
+  length
 ]);
 
 function addOne(num) {
@@ -101,6 +105,9 @@ function createStore() {
     },
     getNextId: function getNextId() {
       return nextId(obj);
+    },
+    getItemsLeft: function getItemsLeft() {
+      return itemsLeft(obj);
     },
     addTodo: add(obj)
   };
