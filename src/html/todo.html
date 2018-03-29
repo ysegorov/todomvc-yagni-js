@@ -1,4 +1,4 @@
-<li class="{{ ctx.completed ? 'completed' : '' }}">
+<li class="{{ ctx.completed ? 'completed' : '' }}" data-js="todo">
     <div class="view">
         <partial src="./todo-checkbox-checked.html" p-if="ctx.completed"></partial>
         <partial src="./todo-checkbox-not-checked.html" p-if-not="ctx.completed"></partial>
@@ -6,4 +6,5 @@
         <button class="destroy"></button>
     </div>
     <input class="edit" name="title" @value="ctx.title">
+    <input type="hidden" name="id" @value="ctx.id">
 </li>

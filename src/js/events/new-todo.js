@@ -3,7 +3,7 @@ import { always, call, callMethod, equals, identity, ifElse, isEmpty, method, ob
 import { closest, eventHandler, queryFirst, render, renderR, setProp } from '@yagni-js/yagni-dom';
 
 import { debug } from '../logger';
-import { itemsLeftView, todoView } from '../views';
+import { clearCompletedView, itemsLeftView, todoView } from '../views';
 import { store } from '../store';
 
 
@@ -20,7 +20,7 @@ const renderNewTodo = call(
     render
   ]),
   pipe([
-    omit(['content']),
+    pick('result'),
     todoView
   ])
 );
@@ -31,12 +31,6 @@ const clearInput = pipe([
   setProp('value', '')
 ]);
 
-const addTodo = callMethod(always(store), 'addTodo', omit(['content']));
-const itemsLeft = pipe([
-  method(store, 'getItemsLeft'),
-  objOf('itemsLeft')
-]);
-
 const renderItemsLeft = call(
   pipe([
     pick('content'),
@@ -44,8 +38,20 @@ const renderItemsLeft = call(
     renderR
   ]),
   pipe([
-    itemsLeft,
+    pick('result'),
     itemsLeftView
+  ])
+);
+
+const renderClearCompleted = call(
+  pipe([
+    pick('content'),
+    queryFirst('[data-js=clear-completed]'),
+    renderR
+  ]),
+  pipe([
+    pick('result'),
+    clearCompletedView
   ])
 );
 
@@ -53,18 +59,19 @@ const createTodo = pipe([
   pick('matchedElement'),
   transform({
     content: closest('#content'),
-    title: callMethod(pick('value'), 'trim'),
-    completed: always(false),
-    id: method(store, 'getNextId')
+    result: pipe([
+      callMethod(pick('value'), 'trim'),
+      method(store, 'addTodo')
+    ])
   }),
   ifElse(
-    pipe([pick('title'), equals('')]),
+    pipe([pick('result'), equals(false)]),
     always(false),
     pipe([
       tap(clearInput),
-      tap(addTodo),
       tap(renderNewTodo),
-      tap(renderItemsLeft)
+      tap(renderItemsLeft),
+      tap(renderClearCompleted)
     ])
   )
 ]);

@@ -1,5 +1,5 @@
 
-import { always, call, callMethod, callMethod2, concat, filter, identity, ifElse, isEmpty, isNil, length, method, mutate, not, objOf, pick, pipe, tap } from '@yagni-js/yagni';
+import { always, call, callMethod, callMethod2, concat, equals, filter, identity, ifElse, isEmpty, isNil, lazy, length, method, mutate, not, objOf, omit, pick, pipe, tap, transform } from '@yagni-js/yagni';
 
 import { debug } from './logger';
 import { storage } from './globals';
@@ -69,23 +69,45 @@ function mutateStore(obj) {
 function persistStore(obj) {
   return pipe([
     mutateStore(obj),
-    allTodos,
-    saveToStorage
+    tap(
+      pipe([
+        allTodos,
+        saveToStorage
+      ])
+    )
   ]);
 }
 
 function add(obj) {
-  return pipe([
-    call(
-      pipe([
-        always(obj),
-        allTodos,
-        concat
-      ]),
-      identity
-    ),
-    persistStore(obj)
-  ]);
+  return ifElse(
+    equals(''),
+    always(false),
+    pipe([
+      transform({
+        title: identity,
+        completed: always(false),
+        id: lazy(nextId, obj),
+        todos: lazy(allTodos, obj),
+        itemsLeft: lazy(itemsLeft, obj)
+      }),
+      transform({
+        title: pick('title'),
+        completed: pick('completed'),
+        id: pick('id'),
+        itemsLeft: pipe([
+          call(
+            pipe([
+              lazy(allTodos, obj),
+              concat
+            ]),
+            identity
+          ),
+          persistStore(obj),
+          itemsLeft
+        ])
+      })
+    ])
+  );
 }
 
 
