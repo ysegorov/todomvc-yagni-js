@@ -86,21 +86,17 @@ function addTodo(obj) {
       transform({
         title: identity,
         completed: always(false),
-        id: lazy(nextId, obj),
-        todos: lazy(allTodos, obj),
-        itemsLeft: lazy(itemsLeft, obj)
+        id: lazy(nextId, obj)
       }),
       transform({
-        title: pick('title'),
-        completed: pick('completed'),
-        id: pick('id'),
+        todo: identity,
         itemsLeft: pipe([
           call(
             pipe([
               lazy(allTodos, obj),
               concat
             ]),
-            omit(['todos', 'itemsLeft'])
+            identity
           ),
           persistStore(obj),
           itemsLeft

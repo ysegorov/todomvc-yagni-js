@@ -1,5 +1,5 @@
 
-import { always, call, callMethod, equals, identity, ifElse, method, pick, pipe, transform, tap } from '@yagni-js/yagni';
+import { always, call, callMethod, equals, identity, ifElse, method, pick, pickPath, pipe, transform, tap } from '@yagni-js/yagni';
 import { closest, eventHandler, queryFirst, render, setProp } from '@yagni-js/yagni-dom';
 
 import { debug } from '../logger';
@@ -22,7 +22,7 @@ const renderNewTodo = call(
     render
   ]),
   pipe([
-    pick('result'),
+    pickPath(['result', 'todo']),
     todoView
   ])
 );
