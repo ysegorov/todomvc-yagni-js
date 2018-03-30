@@ -7,6 +7,7 @@ import { debug } from './logger';
 import { win } from './globals';
 import * as handlers from './handlers';
 import { newTodoEventHandler } from './events/new-todo';
+import { toggleCompletedEventHandler } from './events/toggle-completed';
 
 
 const urls = [
@@ -14,7 +15,8 @@ const urls = [
 ];
 
 const appEvents = [
-  newTodoEventHandler
+  newTodoEventHandler,
+  toggleCompletedEventHandler
 ];
 
 const router = hashRouter(urls);

@@ -1,10 +1,12 @@
 
-import { always, call, callMethod, equals, identity, ifElse, isEmpty, method, objOf, omit, pick, pipe, transform, tap } from '@yagni-js/yagni';
-import { closest, eventHandler, queryFirst, render, renderR, setProp } from '@yagni-js/yagni-dom';
+import { always, call, callMethod, equals, identity, ifElse, method, pick, pipe, transform, tap } from '@yagni-js/yagni';
+import { closest, eventHandler, queryFirst, render, setProp } from '@yagni-js/yagni-dom';
 
 import { debug } from '../logger';
-import { clearCompletedView, itemsLeftView, todoView } from '../views';
+import { todoView } from '../views';
 import { store } from '../store';
+
+import { renderItemsLeft, renderClearCompleted } from './common';
 
 
 const isEnter = pipe([
@@ -30,30 +32,6 @@ const clearInput = pipe([
   queryFirst('[data-js=new-todo]'),
   setProp('value', '')
 ]);
-
-const renderItemsLeft = call(
-  pipe([
-    pick('content'),
-    queryFirst('[data-js=items-left]'),
-    renderR
-  ]),
-  pipe([
-    pick('result'),
-    itemsLeftView
-  ])
-);
-
-const renderClearCompleted = call(
-  pipe([
-    pick('content'),
-    queryFirst('[data-js=clear-completed]'),
-    renderR
-  ]),
-  pipe([
-    pick('result'),
-    clearCompletedView
-  ])
-);
 
 const createTodo = pipe([
   pick('matchedElement'),

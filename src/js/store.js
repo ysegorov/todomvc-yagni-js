@@ -1,5 +1,5 @@
 
-import { always, call, callMethod, callMethod2, concat, equals, filter, identity, ifElse, isEmpty, isNil, lazy, length, method, mutate, not, objOf, omit, pick, pipe, tap, transform } from '@yagni-js/yagni';
+import { always, call, callMethod, callMethod2, concat, equals, filter, first, identity, ifElse, isEmpty, isNil, lazy, length, method, mutate, not, objOf, omit, pick, pipe, tap, transform } from '@yagni-js/yagni';
 
 import { debug } from './logger';
 import { storage } from './globals';
@@ -78,7 +78,7 @@ function persistStore(obj) {
   ]);
 }
 
-function add(obj) {
+function addTodo(obj) {
   return ifElse(
     equals(''),
     always(false),
@@ -100,7 +100,7 @@ function add(obj) {
               lazy(allTodos, obj),
               concat
             ]),
-            identity
+            omit(['todos', 'itemsLeft'])
           ),
           persistStore(obj),
           itemsLeft
@@ -109,6 +109,40 @@ function add(obj) {
     ])
   );
 }
+
+function mutateCompleted(todo) {
+  return mutate(todo, 'completed', !todo.completed);
+}
+
+function toggleTodoCompleted(obj) {
+
+  function makeFilter(id) {
+    return filter(
+      pipe([
+        pick('id'),
+        equals(id)
+      ])
+    );
+  }
+
+  return pipe([
+    call(
+      makeFilter,
+      lazy(allTodos, obj)
+    ),
+    first,
+    mutateCompleted,
+    transform({
+      todo: identity,
+      itemsLeft: pipe([
+        lazy(allTodos, obj),
+        persistStore(obj),
+        itemsLeft
+      ])
+    })
+  ]);
+}
+
 
 
 function createStore() {
@@ -131,7 +165,8 @@ function createStore() {
     getItemsLeft: function getItemsLeft() {
       return itemsLeft(obj);
     },
-    addTodo: add(obj)
+    addTodo: addTodo(obj),
+    toggleTodoCompleted: toggleTodoCompleted(obj)
   };
 }
 
