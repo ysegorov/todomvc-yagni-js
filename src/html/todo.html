@@ -3,7 +3,7 @@
         <partial src="./todo-checkbox-checked.html" p-if="ctx.completed"></partial>
         <partial src="./todo-checkbox-not-checked.html" p-if-not="ctx.completed"></partial>
         <label>{{ ctx.title }}</label>
-        <button class="destroy"></button>
+        <button class="destroy" data-js="destroy-todo"></button>
     </div>
     <input class="edit" name="title" @value="ctx.title">
     <input type="hidden" name="id" @value="ctx.id">

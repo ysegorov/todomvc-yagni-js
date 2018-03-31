@@ -6,12 +6,8 @@ import { debug } from '../logger';
 import { itemsLeftView, todoView } from '../views';
 import { store } from '../store';
 
-import { renderItemsLeft, renderClearCompleted } from './common';
+import { renderItemsLeft, renderClearCompleted, toInt } from './common';
 
-
-function toInt(num) {
-  return parseInt(num, 10);
-}
 
 const reRenderTodo = call(
   pipe([

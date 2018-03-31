@@ -139,6 +139,30 @@ function toggleTodoCompleted(obj) {
   ]);
 }
 
+function destroyTodo(obj) {
+
+  function makeFilter(id) {
+    return filter(
+      not(
+        pipe([
+          pick('id'),
+          equals(id)
+        ])
+      )
+    );
+  }
+
+  return pipe([
+    call(
+      makeFilter,
+      lazy(allTodos, obj)
+    ),
+    persistStore(obj),
+    itemsLeft,
+    objOf('itemsLeft')
+  ]);
+}
+
 
 
 function createStore() {
@@ -162,8 +186,10 @@ function createStore() {
       return itemsLeft(obj);
     },
     addTodo: addTodo(obj),
-    toggleTodoCompleted: toggleTodoCompleted(obj)
+    toggleTodoCompleted: toggleTodoCompleted(obj),
+    destroyTodo: destroyTodo(obj)
   };
+
 }
 
 export const store = createStore();

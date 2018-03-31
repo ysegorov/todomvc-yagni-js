@@ -6,6 +6,10 @@ import { debug } from '../logger';
 import { clearCompletedView, itemsLeftView } from '../views';
 
 
+export function toInt(num) {
+  return parseInt(num, 10);
+}
+
 export const renderItemsLeft = call(
   pipe([
     pick('content'),
