@@ -165,9 +165,9 @@ function destroyTodo(obj) {
 
 
 
-function createStore() {
+function createStore(key, items) {
 
-  const obj = mutate({}, todosKey, loadFromStorage());
+  const obj = mutate({}, key, items);
 
   return {
     getAll: function getAll() {
@@ -192,4 +192,4 @@ function createStore() {
 
 }
 
-export const store = createStore();
+export const store = createStore(todosKey, loadFromStorage());
