@@ -6,7 +6,7 @@ import { debug } from '../logger';
 import { todoView } from '../views';
 import { store } from '../store';
 
-import { renderItemsLeft, renderClearCompleted, toInt } from './common';
+import { renderItemsLeft, renderClearCompleted, renderToggleAll, toInt } from './common';
 
 
 const removeTodoEl = pipe([
@@ -30,7 +30,8 @@ const destroyTodo = pipe([
   pipe([
     tap(removeTodoEl),
     tap(renderItemsLeft),
-    tap(renderClearCompleted)
+    tap(renderClearCompleted),
+    tap(renderToggleAll)
   ])
 ]);
 

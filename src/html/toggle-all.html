@@ -1,0 +1,5 @@
+<span class="{{ ctx.stats.itemsOverall === 0 ? 'hidden' : '' }}" data-js="toggle-all">
+    <partial src="./toggle-all-checkbox-checked.html" p-if="ctx.stats.itemsCompleted === ctx.stats.itemsOverall"></partial>
+    <partial src="./toggle-all-checkbox-not-checked.html" p-if-not="ctx.stats.itemsCompleted === ctx.stats.itemsOverall"></partial>
+    <label for="toggle-all">Mark all as complete</label>
+</span>

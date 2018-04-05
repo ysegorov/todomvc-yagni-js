@@ -6,7 +6,7 @@ import { debug } from '../logger';
 import { todoView } from '../views';
 import { store } from '../store';
 
-import { renderItemsLeft, renderClearCompleted } from './common';
+import { renderItemsLeft, renderClearCompleted, renderToggleAll } from './common';
 
 
 const isEnter = pipe([
@@ -49,7 +49,8 @@ const createTodo = pipe([
       tap(clearInput),
       tap(renderNewTodo),
       tap(renderItemsLeft),
-      tap(renderClearCompleted)
+      tap(renderClearCompleted),
+      tap(renderToggleAll)
     ])
   )
 ]);

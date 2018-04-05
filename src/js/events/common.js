@@ -3,33 +3,27 @@ import { call, pick, pipe } from '@yagni-js/yagni';
 import { queryFirst, renderR } from '@yagni-js/yagni-dom';
 
 import { debug } from '../logger';
-import { clearCompletedView, itemsLeftView } from '../views';
+import { clearCompletedView, itemsLeftView, toggleAllView } from '../views';
 
 
 export function toInt(num) {
   return parseInt(num, 10);
 }
 
-export const renderItemsLeft = call(
-  pipe([
-    pick('content'),
-    queryFirst('[data-js=items-left]'),
-    renderR
-  ]),
-  pipe([
-    pick('result'),
-    itemsLeftView
-  ])
-);
+function render(query, view) {
+  return call(
+    pipe([
+      pick('content'),
+      queryFirst(query),
+      renderR
+    ]),
+    pipe([
+      pick('result'),
+      view
+    ])
+  );
+}
 
-export const renderClearCompleted = call(
-  pipe([
-    pick('content'),
-    queryFirst('[data-js=clear-completed]'),
-    renderR
-  ]),
-  pipe([
-    pick('result'),
-    clearCompletedView
-  ])
-);
+export const renderItemsLeft = render('[data-js=items-left]', itemsLeftView);
+export const renderClearCompleted = render('[data-js=clear-completed]', clearCompletedView);
+export const renderToggleAll = render('[data-js=toggle-all]', toggleAllView);
