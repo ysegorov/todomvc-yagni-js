@@ -23,10 +23,7 @@ const completedTodos = pipe([
   allTodos,
   filter(isCompleted)
 ]);
-const itemsLeft = pipe([
-  activeTodos,
-  length
-]);
+
 
 function addOne(num) {
   return num + 1;
@@ -78,6 +75,34 @@ function persistStore(obj) {
   ]);
 }
 
+
+function calcStats(todos) {
+  const initial = {
+    itemsLeft: 0,
+    itemsCompleted: 0,
+    itemsOverall: 0
+  };
+
+  return todos.reduce(
+    function (acc, todo) {
+      const itemsLeft = todo.completed ? acc.itemsLeft : acc.itemsLeft + 1;
+      const itemsCompleted = todo.completed ? acc.itemsCompleted + 1 : acc.itemsCompleted;
+      return {
+        itemsLeft: itemsLeft,
+        itemsCompleted: itemsCompleted,
+        itemsOverall: itemsLeft + itemsCompleted
+      };
+    },
+    initial
+  );
+}
+
+const getStats = pipe([
+  allTodos,
+  calcStats
+]);
+
+
 function addTodo(obj) {
   return ifElse(
     equals(''),
@@ -90,7 +115,7 @@ function addTodo(obj) {
       }),
       transform({
         todo: identity,
-        itemsLeft: pipe([
+        stats: pipe([
           call(
             pipe([
               lazy(allTodos, obj),
@@ -99,7 +124,7 @@ function addTodo(obj) {
             identity
           ),
           persistStore(obj),
-          itemsLeft
+          getStats
         ])
       })
     ])
@@ -130,10 +155,10 @@ function toggleTodoCompleted(obj) {
     mutateCompleted,
     transform({
       todo: identity,
-      itemsLeft: pipe([
+      stats: pipe([
         lazy(allTodos, obj),
         persistStore(obj),
-        itemsLeft
+        getStats
       ])
     })
   ]);
@@ -158,11 +183,10 @@ function destroyTodo(obj) {
       lazy(allTodos, obj)
     ),
     persistStore(obj),
-    itemsLeft,
-    objOf('itemsLeft')
+    getStats,
+    objOf('stats')
   ]);
 }
-
 
 
 function createStore(key, items) {
@@ -182,9 +206,7 @@ function createStore(key, items) {
     getNextId: function getNextId() {
       return nextId(obj);
     },
-    getItemsLeft: function getItemsLeft() {
-      return itemsLeft(obj);
-    },
+    getStats: lazy(getStats, obj),
     addTodo: addTodo(obj),
     toggleTodoCompleted: toggleTodoCompleted(obj),
     destroyTodo: destroyTodo(obj)

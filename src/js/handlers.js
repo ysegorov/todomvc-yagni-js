@@ -28,7 +28,7 @@ const prepareView = pipe([
       pickFrom(urlStoreMap),
       result
     ]),
-    itemsLeft: method(store, 'getItemsLeft')
+    stats: method(store, 'getStats')
   }),
   appView
 ]);
