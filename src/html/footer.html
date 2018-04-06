@@ -1,5 +1,5 @@
 <!-- This footer should be hidden by default and be shown when there are todos -->
-<footer class="footer">
+<footer class="footer {{ ctx.stats.itemsOverall ? '' : 'hidden' }}" data-js="footer" @data-filter="ctx.filter">
     <partial src="./items-left.html"></partial>
     <!-- Remove this if you don't implement routing -->
     <ul class="filters">

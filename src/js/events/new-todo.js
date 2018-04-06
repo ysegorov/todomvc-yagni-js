@@ -6,7 +6,7 @@ import { debug } from '../logger';
 import { todoView } from '../views';
 import { store } from '../store';
 
-import { renderItemsLeft, renderClearCompleted, renderToggleAll } from './common';
+import { getAndMergeFilterValue, renderFooter, renderToggleAll } from './common';
 
 
 const isEnter = pipe([
@@ -48,8 +48,8 @@ const createTodo = pipe([
     pipe([
       tap(clearInput),
       tap(renderNewTodo),
-      tap(renderItemsLeft),
-      tap(renderClearCompleted),
+      getAndMergeFilterValue,
+      tap(renderFooter),
       tap(renderToggleAll)
     ])
   )

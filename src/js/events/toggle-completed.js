@@ -6,7 +6,7 @@ import { debug } from '../logger';
 import { itemsLeftView, todoView } from '../views';
 import { store } from '../store';
 
-import { renderItemsLeft, renderClearCompleted, renderToggleAll, toInt } from './common';
+import { getAndMergeFilterValue, renderFooter, renderToggleAll, toInt } from './common';
 
 
 const reRenderTodo = call(
@@ -35,8 +35,8 @@ const toggleCompleted = pipe([
     ])
   }),
   tap(reRenderTodo),
-  tap(renderItemsLeft),
-  tap(renderClearCompleted),
+  getAndMergeFilterValue,
+  tap(renderFooter),
   tap(renderToggleAll)
 ]);
 
