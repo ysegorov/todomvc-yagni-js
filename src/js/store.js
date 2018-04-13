@@ -188,6 +188,17 @@ function destroyTodo(obj) {
   ]);
 }
 
+function clearCompleted(obj) {
+
+  return pipe([
+    lazy(allTodos, obj),
+    filter(not(pick('completed'))),
+    persistStore(obj),
+    getStats,
+    objOf('stats')
+  ]);
+}
+
 
 function createStore(key, items) {
 
@@ -209,7 +220,8 @@ function createStore(key, items) {
     getStats: lazy(getStats, obj),
     addTodo: addTodo(obj),
     toggleTodoCompleted: toggleTodoCompleted(obj),
-    destroyTodo: destroyTodo(obj)
+    destroyTodo: destroyTodo(obj),
+    clearCompleted: clearCompleted(obj)
   };
 
 }

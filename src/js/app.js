@@ -9,6 +9,7 @@ import * as handlers from './handlers';
 
 import { newTodoEventHandler } from './events/new-todo';
 import { toggleCompletedEventHandler } from './events/toggle-completed';
+import { clearCompletedEventHandler } from './events/clear-completed';
 import { destroyTodoEventHandler } from './events/destroy-todo';
 
 
@@ -19,6 +20,7 @@ const urls = [
 const appEvents = [
   newTodoEventHandler,
   toggleCompletedEventHandler,
+  clearCompletedEventHandler,
   destroyTodoEventHandler
 ];
 
